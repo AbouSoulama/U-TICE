@@ -2,8 +2,8 @@
 Contributors: britner
 Tags: templates, gutenberg
 Requires at least: 5.6
-Tested up to: 6.3
-Stable tag: 1.2.22
+Tested up to: 6.4
+Stable tag: 1.2.24
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -125,6 +125,12 @@ assist you with verification, CVE assignment, and notify the
 developers of this plugin.
 
 == Changelog ==
+
+= 1.2.24 =
+* Fix: Issue with Pro site imports.
+
+= 1.2.23 =
+* Fix: Issue with Pro site imports.
 
 = 1.2.22 =
 * Add: Import webp images support.

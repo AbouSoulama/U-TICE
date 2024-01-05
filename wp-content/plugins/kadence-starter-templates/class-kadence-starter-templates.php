@@ -197,7 +197,7 @@ class Starter_Templates {
 			define( 'KADENCE_STARTER_TEMPLATES_URL', trailingslashit( plugin_dir_url( __FILE__ ) ) );
 		}
 		if ( ! defined( 'KADENCE_STARTER_TEMPLATES_VERSION' ) ) {
-			define( 'KADENCE_STARTER_TEMPLATES_VERSION', '1.2.21' );
+			define( 'KADENCE_STARTER_TEMPLATES_VERSION', '1.2.24' );
 		}
 	}
 
@@ -1033,18 +1033,25 @@ class Starter_Templates {
 			// Check for multiple images.
 			$has_content = ( 0 < wp_count_posts( 'attachment' )->inherit ? true : false );
 		}
+		$current_user     = wp_get_current_user();
+		$user_email       = $current_user->user_email;
 		if ( class_exists( 'Kadence_Theme_Pro' ) ) {
-			if ( is_multisite() && ! apply_filters( 'kadence_activation_individual_multisites', false ) ) {
-				$pro_data = get_site_option( 'ktp_api_manager' );
-			} else {
-				$pro_data = get_option( 'ktp_api_manager' );
+			$pro_data = array();
+			if ( function_exists( '\KadenceWP\KadencePro\StellarWP\Uplink\get_license_key' ) ) {
+				$pro_data['ktp_api_key'] = \KadenceWP\KadencePro\StellarWP\Uplink\get_license_key( 'kadence-theme-pro' );
+				$pro_data['activation_email'] = $current_user->user_email;
+			}
+			if ( empty( $pro_data ) ) {
+				if ( is_multisite() && ! apply_filters( 'kadence_activation_individual_multisites', false ) ) {
+					$pro_data = get_site_option( 'ktp_api_manager' );
+				} else {
+					$pro_data = get_option( 'ktp_api_manager' );
+				}
 			}
 		} else {
 			$pro_data = false;
 		}
 		$show_builder_choice = ( 'active' === $plugins['elementor']['state'] ? true : false );
-		$current_user     = wp_get_current_user();
-		$user_email       = $current_user->user_email;
 		$subscribed       = ( class_exists( 'Kadence_Theme_Pro' ) || ! empty( apply_filters( 'kadence_starter_templates_custom_array', array() ) ) ? true : get_option( 'kadence_starter_templates_subscribe' ) );
 		wp_enqueue_style( 'kadence-starter-templates', KADENCE_STARTER_TEMPLATES_URL . 'assets/css/starter-templates.css', array( 'wp-components' ), KADENCE_STARTER_TEMPLATES_VERSION );
 		wp_enqueue_script( 'kadence-starter-templates', KADENCE_STARTER_TEMPLATES_URL . 'assets/js/starter-templates.js', array( 'jquery', 'wp-i18n', 'wp-element', 'wp-plugins', 'wp-components', 'wp-api', 'wp-hooks', 'wp-edit-post', 'lodash', 'wp-block-library', 'wp-block-editor', 'wp-editor' ), KADENCE_STARTER_TEMPLATES_VERSION, true );
